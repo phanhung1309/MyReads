@@ -30,7 +30,6 @@ const Home = () => {
   useEffect(() => {
     getAll().then((res) => {
       setBooksList(res);
-      console.log(res);
     });
   }, []);
 

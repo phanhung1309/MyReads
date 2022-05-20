@@ -1,0 +1,33 @@
+.search-books-bar input {
+    width: 100%;
+    padding: 15px 10px;
+    font-size: 1.25em;
+    border: none;
+    outline: none;
+}
+
+.search-books-results {
+    padding: 80px 10px 20px;
+}
+
+
+.books-grid {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.no-results{
+    padding: 0 5%;
+    color: grey;
+    font-size: .8em;
+}
+
+/*.books-grid li {*/
+/*    padding: 10px 15px;*/
+/*    text-align: left;*/
+/*}*/
+
