@@ -1,5 +1,6 @@
 .book {
     width: 140px;
+    margin: 0 10px;
 }
 
 .book-title,
@@ -29,10 +30,7 @@
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    background: #60ac5d;
-    background-image: url('./assets/arrow-drop-down.svg');
-    background-repeat: no-repeat;
-    background-position: center;
+    background: #60ac5d url('./assets/arrow-drop-down.svg') no-repeat center;
     background-size: 20px;
     box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
 }

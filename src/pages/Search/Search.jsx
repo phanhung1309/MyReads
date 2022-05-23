@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { getAll, search, update } from "../../services/BookService";
+import { search, update } from "../../services/BookService";
 import SearchBar from "../../components/SearchBar";
 import Book from "../../components/Book";
 import "./Search.css";

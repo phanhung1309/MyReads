@@ -1,4 +1,5 @@
 import React from "react";
+import Rating from "../Rating";
 import "./Book.css";
 
 const Book = ({ book, onMoveShelf }) => {
@@ -25,6 +26,7 @@ const Book = ({ book, onMoveShelf }) => {
           </select>
         </div>
       </div>
+      <Rating value={book.averageRating} />
       <div className="book-title">{book.title}</div>
       <div className="book-authors">{book.authors.toString()}</div>
     </div>
