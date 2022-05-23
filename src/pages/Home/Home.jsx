@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Book from "../../components/Book";
-import { getAll } from "../../services/BookService";
+import { getAll, update } from "../../services/BookService";
 import "./Home.css";
 
 const Home = () => {
@@ -27,6 +27,15 @@ const Home = () => {
     navigate("/search");
   };
 
+  const onMoveShelf = async (book, shelf) => {
+    await update(book, shelf);
+
+    const res = await getAll();
+    setBooksList(res);
+
+    alert("Moved successfully");
+  };
+
   useEffect(() => {
     getAll().then((res) => {
       setBooksList(res);
@@ -47,12 +56,7 @@ const Home = () => {
                 {booksList
                   .filter((book) => book.shelf === bookShelf.key)
                   .map((book) => (
-                    <Book
-                      key={book.id}
-                      image={`url(${book.imageLinks.smallThumbnail})`}
-                      title={book.title}
-                      authors={book.authors.toString()}
-                    />
+                    <Book key={book.id} book={book} onMoveShelf={onMoveShelf} />
                   ))}
               </ol>
             </div>

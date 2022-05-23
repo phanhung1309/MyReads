@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { search } from "../../services/BookService";
+import { getAll, search, update } from "../../services/BookService";
 import SearchBar from "../../components/SearchBar";
 import Book from "../../components/Book";
 import "./Search.css";
@@ -17,17 +17,16 @@ const Search = () => {
     }
   };
 
+  const onMoveShelf = async (book, shelf) => {
+    await update(book, shelf);
+
+    alert("Moved successfully");
+  };
+
   const clearResults = () => setSearchResults([]);
 
   const renderBooks = searchResults.map((book) => {
-    return (
-      <Book
-        key={book.id}
-        image={`url(${book.imageLinks.smallThumbnail})`}
-        title={book.title}
-        authors={book.authors}
-      />
-    );
+    return <Book key={book.id} book={book} onMoveShelf={onMoveShelf} />;
   });
 
   return (

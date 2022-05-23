@@ -1,7 +1,7 @@
 import React from "react";
 import "./Book.css";
 
-const Book = ({ image, title, authors }) => {
+const Book = ({ book, onMoveShelf }) => {
   return (
     <div className="book">
       <div className="book-top">
@@ -10,11 +10,11 @@ const Book = ({ image, title, authors }) => {
           style={{
             width: 128,
             height: 193,
-            backgroundImage: image,
+            backgroundImage: `url(${book.imageLinks.smallThumbnail})`,
           }}
         />
         <div className="book-shelf-changer">
-          <select>
+          <select onChange={(e) => onMoveShelf(book, e.target.value)}>
             <option value="move" disabled>
               Move to...
             </option>
@@ -25,8 +25,8 @@ const Book = ({ image, title, authors }) => {
           </select>
         </div>
       </div>
-      <div className="book-title">{title}</div>
-      <div className="book-authors">{authors}</div>
+      <div className="book-title">{book.title}</div>
+      <div className="book-authors">{book.authors.toString()}</div>
     </div>
   );
 };
