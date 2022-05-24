@@ -1,8 +1,15 @@
 import React from "react";
 import Rating from "../Rating";
+import { useNavigate } from "react-router-dom";
 import "./Book.css";
 
 const Book = ({ book, onMoveShelf }) => {
+  const navigate = useNavigate();
+
+  const handleClickBook = (bookId) => {
+    navigate(`/${bookId}`);
+  };
+
   return (
     <div className="book">
       <div className="book-top">
@@ -13,6 +20,7 @@ const Book = ({ book, onMoveShelf }) => {
             height: 193,
             backgroundImage: `url(${book.imageLinks.smallThumbnail})`,
           }}
+          onClick={() => handleClickBook(book.id)}
         />
         <div className="book-shelf-changer">
           <select onChange={(e) => onMoveShelf(book, e.target.value)}>
