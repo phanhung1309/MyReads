@@ -6,6 +6,17 @@ import "./Book.css";
 const Book = ({ book, onMoveShelf }) => {
   const navigate = useNavigate();
 
+  const bookshelfList = [
+    { label: "Current reading", value: "currentlyReading" },
+    { label: "Want to read", value: "wantToRead" },
+    { label: "Read", value: "read" },
+    { label: "None", value: "none" },
+  ];
+
+  const isSelected = (currentShelf) => {
+    return currentShelf === book.shelf;
+  };
+
   const handleClickBook = (bookId) => {
     navigate(`/${bookId}`);
   };
@@ -27,10 +38,11 @@ const Book = ({ book, onMoveShelf }) => {
             <option value="move" disabled>
               Move to...
             </option>
-            <option value="currentlyReading">Currently Reading</option>
-            <option value="wantToRead">Want to Read</option>
-            <option value="read">Read</option>
-            <option value="none">None</option>
+            {bookshelfList.map((shelf) => (
+              <option value={shelf.value} selected={isSelected(shelf.value)}>
+                {shelf.label}
+              </option>
+            ))}
           </select>
         </div>
       </div>
