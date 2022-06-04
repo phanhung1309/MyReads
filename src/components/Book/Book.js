@@ -13,10 +13,6 @@ const Book = ({ book, onMoveShelf }) => {
     { label: "None", value: "none" },
   ];
 
-  const isSelected = (currentShelf) => {
-    return currentShelf === book.shelf;
-  };
-
   const handleClickBook = (bookId) => {
     navigate(`/${bookId}`);
   };
@@ -29,17 +25,22 @@ const Book = ({ book, onMoveShelf }) => {
           style={{
             width: 128,
             height: 193,
-            backgroundImage: `url(${book.imageLinks.smallThumbnail})`,
+            backgroundImage: `url(${
+              book.imageLinks ? book.imageLinks.smallThumbnail : ""
+            })`,
           }}
           onClick={() => handleClickBook(book.id)}
         />
         <div className="book-shelf-changer">
-          <select onChange={(e) => onMoveShelf(book, e.target.value)}>
+          <select
+            onChange={(e) => onMoveShelf(book, e.target.value)}
+            defaultValue={book.shelf ? book.shelf : "move"}
+          >
             <option value="move" disabled>
               Move to...
             </option>
             {bookshelfList.map((shelf) => (
-              <option value={shelf.value} selected={isSelected(shelf.value)}>
+              <option key={shelf.value} value={shelf.value}>
                 {shelf.label}
               </option>
             ))}
@@ -48,7 +49,9 @@ const Book = ({ book, onMoveShelf }) => {
       </div>
       <Rating value={book.averageRating} />
       <div className="book-title">{book.title}</div>
-      <div className="book-authors">{book.authors.toString()}</div>
+      <div className="book-authors">
+        {book.authors ? book.authors.toString() : "Unknown"}
+      </div>
     </div>
   );
 };
