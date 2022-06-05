@@ -8,16 +8,20 @@ const Search = () => {
   const [booksList, setBooksList] = useState([]);
   const [searchResults, setSearchResults] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const onSearchSubmit = async (query) => {
-    try {
-      setLoading(true);
-      const res = await search(query);
+    setLoading(true);
+    setError("");
+    const res = await search(query);
+
+    if (res.error) {
+      setLoading(false);
+      setError("Oops! Search not found");
+      setSearchResults(res.items);
+    } else {
+      setLoading(false);
       setSearchResults(res);
-      setLoading(false);
-    } catch (e) {
-      setSearchResults([]);
-      setLoading(false);
     }
   };
 
@@ -43,7 +47,7 @@ const Search = () => {
     return null;
   };
 
-  const renderBooks = searchResults.map((book) => {
+  const renderBooks = searchResults?.map((book) => {
     return (
       <Book
         key={book.id}
@@ -67,6 +71,7 @@ const Search = () => {
         <div className="books-grid">
           {loading && <div>Loading...</div>}
           {!loading && searchResults.length !== 0 && renderBooks}
+          {error && <div>{error}</div>}
         </div>
       </div>
     </div>
