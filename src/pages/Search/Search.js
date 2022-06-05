@@ -7,21 +7,28 @@ import "./Search.css";
 const Search = () => {
   const [booksList, setBooksList] = useState([]);
   const [searchResults, setSearchResults] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const onSearchSubmit = async (query) => {
-    const res = await search(query);
-
-    if (res.error) {
-      setSearchResults(res.items);
-    } else {
+    try {
+      setLoading(true);
+      const res = await search(query);
       setSearchResults(res);
+      setLoading(false);
+    } catch (e) {
+      setSearchResults([]);
+      setLoading(false);
     }
   };
 
   const onMoveShelf = async (book, shelf) => {
-    await update(book, shelf);
+    try {
+      await update(book, shelf);
 
-    alert("Moved successfully");
+      alert("Moved successfully");
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   const clearResults = () => setSearchResults([]);
@@ -58,11 +65,8 @@ const Search = () => {
       <SearchBar onSearchSubmit={onSearchSubmit} clearResults={clearResults} />
       <div className="search-books-results">
         <div className="books-grid">
-          {searchResults.length !== 0 ? (
-            renderBooks
-          ) : (
-            <p className="no-results">No results found.</p>
-          )}
+          {loading && <div>Loading...</div>}
+          {!loading && searchResults.length !== 0 && renderBooks}
         </div>
       </div>
     </div>
