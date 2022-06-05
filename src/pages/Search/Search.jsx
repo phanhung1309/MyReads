@@ -1,10 +1,11 @@
-import React, { useState } from "react";
-import { search, update } from "../../services/BookService";
+import React, { useState, useEffect } from "react";
+import { getAll, search, update } from "../../services/BookService";
 import SearchBar from "../../components/SearchBar";
 import Book from "../../components/Book";
 import "./Search.css";
 
 const Search = () => {
+  const [booksList, setBooksList] = useState([]);
   const [searchResults, setSearchResults] = useState([]);
 
   const onSearchSubmit = async (query) => {
@@ -25,9 +26,32 @@ const Search = () => {
 
   const clearResults = () => setSearchResults([]);
 
+  const findCurrentShelf = (bookId) => {
+    const book = booksList.find((book) => book.id === bookId);
+
+    if (book) {
+      return book.shelf;
+    }
+
+    return null;
+  };
+
   const renderBooks = searchResults.map((book) => {
-    return <Book key={book.id} book={book} onMoveShelf={onMoveShelf} />;
+    return (
+      <Book
+        key={book.id}
+        book={book}
+        onMoveShelf={onMoveShelf}
+        currentShelf={findCurrentShelf(book.id)}
+      />
+    );
   });
+
+  useEffect(() => {
+    getAll().then((res) => {
+      setBooksList(res);
+    });
+  }, []);
 
   return (
     <div className="search-books">

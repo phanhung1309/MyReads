@@ -3,7 +3,7 @@ import Rating from "../Rating";
 import { useNavigate } from "react-router-dom";
 import "./Book.css";
 
-const Book = ({ book, onMoveShelf }) => {
+const Book = ({ book, currentShelf, onMoveShelf }) => {
   const navigate = useNavigate();
 
   const bookshelfList = [
@@ -34,7 +34,9 @@ const Book = ({ book, onMoveShelf }) => {
         <div className="book-shelf-changer">
           <select
             onChange={(e) => onMoveShelf(book, e.target.value)}
-            defaultValue={book.shelf ? book.shelf : "move"}
+            defaultValue={
+              book.shelf ? book.shelf : currentShelf ? currentShelf : "none"
+            }
           >
             <option value="move" disabled>
               Move to...
