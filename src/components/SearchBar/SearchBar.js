@@ -1,30 +1,25 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import useDebounce from "../../hooks/useDebounce";
 import "./SearchBar.css";
 
 const SearchBar = ({ onSearchSubmit, clearResults }) => {
   const [query, setQuery] = useState("");
-  const [debouncedQuery, setDebouncedQuery] = useState(query);
+  const debouncedQuery = useDebounce(query, 500);
   const navigate = useNavigate();
-
-  // Update query value after 0.5 second from the last update of 'debouncedQuery'
-  useEffect(() => {
-    const timer = setTimeout(() => setQuery(debouncedQuery), 500);
-    return () => clearTimeout(timer);
-  }, [debouncedQuery]);
 
   // Submit new search
   useEffect(() => {
-    if (query !== "") {
-      onSearchSubmit(query);
+    if (debouncedQuery !== "") {
+      onSearchSubmit(debouncedQuery);
     } else {
       clearResults();
     }
     // eslint-disable-next-line
-  }, [query]);
+  }, [debouncedQuery]);
 
   const handleInputSearch = (e) => {
-    setDebouncedQuery(e.target.value);
+    setQuery(e.target.value);
   };
 
   const handleCloseSearch = () => {
@@ -40,7 +35,7 @@ const SearchBar = ({ onSearchSubmit, clearResults }) => {
         <input
           type="text"
           placeholder="Search by title or author"
-          value={debouncedQuery}
+          value={query}
           onChange={handleInputSearch}
         />
       </div>
