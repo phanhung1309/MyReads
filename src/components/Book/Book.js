@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import Rating from "../Rating";
 import { useNavigate } from "react-router-dom";
 import "./Book.css";
@@ -56,6 +57,12 @@ const Book = ({ book, currentShelf, onMoveShelf }) => {
       </div>
     </div>
   );
+};
+
+Book.propTypes = {
+  book: PropTypes.object.isRequired,
+  currentShelf: PropTypes.string,
+  onMoveShelf: PropTypes.func.isRequired,
 };
 
 export default Book;

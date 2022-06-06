@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
 import useDebounce from "../../hooks/useDebounce";
 import "./SearchBar.css";
@@ -41,6 +42,11 @@ const SearchBar = ({ onSearchSubmit, clearResults }) => {
       </div>
     </div>
   );
+};
+
+SearchBar.propTypes = {
+  onSearchSubmit: PropTypes.func.isRequired,
+  clearResults: PropTypes.func.isRequired,
 };
 
 export default SearchBar;
