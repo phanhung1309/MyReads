@@ -3,14 +3,17 @@ import { getAll, search, update } from "../../services/BookService";
 import SearchBar from "../../components/SearchBar";
 import Book from "../../components/Book";
 import "./Search.css";
+import useDebounce from "../../hooks/useDebounce";
 
 const Search = () => {
   const [booksList, setBooksList] = useState([]);
+  const [query, setQuery] = useState("");
+  const debouncedQuery = useDebounce(query, 500);
   const [searchResults, setSearchResults] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  const onSearchSubmit = async (query) => {
+  const handleSearchSubmit = async (query) => {
     setLoading(true);
     setError("");
     const res = await search(query);
@@ -25,16 +28,6 @@ const Search = () => {
     }
   };
 
-  const onMoveShelf = async (book, shelf) => {
-    try {
-      await update(book, shelf);
-
-      alert("Moved successfully");
-    } catch (e) {
-      console.log(e);
-    }
-  };
-
   const clearResults = () => setSearchResults([]);
 
   const findCurrentShelf = (bookId) => {
@@ -45,6 +38,20 @@ const Search = () => {
     }
 
     return null;
+  };
+
+  const handleInputSearch = (e) => {
+    setQuery(e.target.value);
+  };
+
+  const onMoveShelf = async (book, shelf) => {
+    try {
+      await update(book, shelf);
+
+      alert("Moved successfully");
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   const renderBooks = searchResults?.map((book) => {
@@ -64,9 +71,18 @@ const Search = () => {
     });
   }, []);
 
+  useEffect(() => {
+    if (debouncedQuery !== "") {
+      handleSearchSubmit(debouncedQuery);
+    } else {
+      clearResults();
+    }
+    // eslint-disable-next-line
+  }, [debouncedQuery]);
+
   return (
     <div className="search-books">
-      <SearchBar onSearchSubmit={onSearchSubmit} clearResults={clearResults} />
+      <SearchBar value={query} onChange={handleInputSearch} />
       <div className="search-books-results">
         <div className="books-grid">
           {loading && <div>Loading...</div>}

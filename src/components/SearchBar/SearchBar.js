@@ -1,27 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
-import useDebounce from "../../hooks/useDebounce";
 import "./SearchBar.css";
 
-const SearchBar = ({ onSearchSubmit, clearResults }) => {
-  const [query, setQuery] = useState("");
-  const debouncedQuery = useDebounce(query, 500);
+const SearchBar = ({ value, onChange }) => {
   const navigate = useNavigate();
-
-  // Submit new search
-  useEffect(() => {
-    if (debouncedQuery !== "") {
-      onSearchSubmit(debouncedQuery);
-    } else {
-      clearResults();
-    }
-    // eslint-disable-next-line
-  }, [debouncedQuery]);
-
-  const handleInputSearch = (e) => {
-    setQuery(e.target.value);
-  };
 
   const handleCloseSearch = () => {
     navigate("/");
@@ -36,8 +19,8 @@ const SearchBar = ({ onSearchSubmit, clearResults }) => {
         <input
           type="text"
           placeholder="Search by title or author"
-          value={query}
-          onChange={handleInputSearch}
+          value={value}
+          onChange={onChange}
         />
       </div>
     </div>
@@ -45,8 +28,8 @@ const SearchBar = ({ onSearchSubmit, clearResults }) => {
 };
 
 SearchBar.propTypes = {
-  onSearchSubmit: PropTypes.func.isRequired,
-  clearResults: PropTypes.func.isRequired,
+  value: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired,
 };
 
 export default SearchBar;
